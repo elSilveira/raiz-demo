@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧬 RAIZ Perfect World - 100% Implementation Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a, #1a0a2e, #16213e);
+            overflow-x: hidden;
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* Animated Background */
+        .background-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: grid-move 20s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes grid-move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: float 8s infinite linear;
+            opacity: 0.6;
+        }
+
+        .particle:nth-child(odd) {
+            background: #ff6b6b;
+            animation-duration: 12s;
+        }
+
+        .particle:nth-child(3n) {
+            background: #4ecdc4;
+            animation-duration: 10s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #00ff88, #ff6b6b, #4ecdc4, #ffd93d);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 3s ease-in-out infinite;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 2rem;
+        }
+
+        /* Interactive Guide */
+        .interactive-guide {
+            max-width: 800px;
+            margin: 2rem auto 0;
+            animation: guide-slide-in 1s ease-out 3s both;
+        }
+
+        @keyframes guide-slide-in {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .guide-content {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(78, 205, 196, 0.15));
+            border: 2px solid rgba(0, 255, 136, 0.4);
+            border-radius: 15px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .guide-icon {
+            font-size: 2rem;
+            animation: guide-pulse 2s infinite;
+        }
+
+        @keyframes guide-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .guide-text {
+            flex: 1;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .guide-text strong {
+            color: #00ff88;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .guide-dismiss {
+            background: rgba(255, 107, 107, 0.2);
+            border: 1px solid rgba(255, 107, 107, 0.5);
+            color: #ff6b6b;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .guide-dismiss:hover {
+            background: rgba(255, 107, 107, 0.3);
+            transform: scale(1.1);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Network Visualization */
+        .network-section {
+            margin: 4rem 0;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #00ff88;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        .network-container {
+            position: relative;
+            height: 600px;
+            background: radial-gradient(circle at center, rgba(0, 255, 136, 0.1) 0%, transparent 70%);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+        }
+
+        /* TRON Nodes */
+        .tron-node {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, #00ff88, #00cc6a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            animation: pulse 2s infinite, orbit 20s infinite linear;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.6);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tron-node:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 50px rgba(0, 255, 136, 0.8);
+        }
+
+        .tron-node.core {
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, #ff6b6b, #cc5555);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulse 1.5s infinite, rotate 15s infinite linear;
+            font-size: 1.1rem;
+        }
+
+        .tron-node.memory {
+            background: radial-gradient(circle, #4ecdc4, #3aa39a);
+        }
+
+        .tron-node.gateway {
+            background: radial-gradient(circle, #ffd93d, #ccad31);
+        }
+
+        .tron-node.protocol {
+            background: radial-gradient(circle, #a8e6cf, #86b39f);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes rotate {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes orbit {
+            0% { transform: rotate(0deg) translateX(200px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(200px) rotate(-360deg); }
+        }
+
+        /* Connection Lines */
+        .connection {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ff88, transparent);
+            animation: data-flow 2s infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes data-flow {
+            0% { opacity: 0.2; }
+            50% { opacity: 1; }
+            100% { opacity: 0.2; }
+        }
+
+        /* Data Packets */
+        .data-packet {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: packet-travel 3s infinite linear;
+            box-shadow: 0 0 10px #00ff88;
+        }
+
+        @keyframes packet-travel {
+            0% { transform: translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateX(300px) rotate(180deg); opacity: 0; }
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(255, 107, 107, 0.1));
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .feature-card:hover::before {
+            left: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #00ff88;
+        }
+
+        .feature-description {
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        /* Status Dashboard */
+        .status-dashboard {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(26, 10, 46, 0.5));
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 4rem 0;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .metric {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #00ff88;
+            display: block;
+            animation: counter 2s ease-out;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-top: 0.5rem;
+        }
+
+        @keyframes counter {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Protocol Flow */
+        .protocol-flow {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 4rem 0;
+            padding: 2rem;
+            background: linear-gradient(90deg, rgba(0, 255, 136, 0.1), rgba(255, 107, 107, 0.1), rgba(78, 205, 196, 0.1));
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .protocol-step {
+            text-align: center;
+            flex: 1;
+            position: relative;
+            z-index: 2;
+        }
+
+        .protocol-step::after {
+            content: '→';
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            color: #00ff88;
+            animation: arrow-pulse 1s infinite;
+        }
+
+        .protocol-step:last-child::after {
+            display: none;
+        }
+
+        @keyframes arrow-pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .step-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+            animation: step-glow 3s infinite;
+        }
+
+        @keyframes step-glow {
+            0%, 100% { text-shadow: 0 0 10px currentColor; }
+            50% { text-shadow: 0 0 30px currentColor; }
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #00ff88;
+        }
+
+        .step-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Performance Metrics */
+        .performance-bars {
+            margin: 4rem 0;
+        }
+
+        .performance-item {
+            margin-bottom: 2rem;
+        }
+
+        .performance-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .performance-bar {
+            height: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .performance-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88, #00cc6a);
+            border-radius: 10px;
+            animation: fill-up 2s ease-out;
+            position: relative;
+        }
+
+        .performance-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shine 2s infinite;
+        }
+
+        @keyframes fill-up {
+            0% { width: 0%; }
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }        /* Real RAIZ System Styles */
+        .system-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: linear-gradient(135deg, #00ff88, #00cc6a);
+            color: black;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.3);
+        }        .control-btn:active {
+            transform: translateY(0);
+        }
+
+        /* System Status Indicator */
+        .system-status {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .status-indicator.offline {
+            background: rgba(255, 107, 107, 0.1);
+            border-color: rgba(255, 107, 107, 0.3);
+            color: #ff6b6b;
+        }
+
+        .status-indicator.online {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: rgba(0, 255, 136, 0.3);
+            color: #00ff88;
+        }
+
+        .status-indicator.active {
+            background: rgba(255, 215, 61, 0.1);
+            border-color: rgba(255, 215, 61, 0.3);
+            color: #ffd93d;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .offline .status-dot {
+            background: #ff6b6b;
+            animation: dot-blink 2s infinite;
+        }
+
+        .online .status-dot {
+            background: #00ff88;
+            animation: dot-pulse 1s infinite;
+        }
+
+        .active .status-dot {
+            background: #ffd93d;
+            animation: dot-pulse 0.5s infinite;
+        }
+
+        @keyframes dot-blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+
+        @keyframes dot-pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+        }
+
+        .status-text {
+            font-size: 0.9rem;
+        }
+
+        .real-network-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .memory-node, .gateway-node {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 255, 136, 0.05));
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .memory-node:hover, .gateway-node:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .node-header {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #00ff88;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .node-id {
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.5rem;
+            border-radius: 5px;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .node-status {
+            text-align: center;
+            padding: 0.3rem;
+            border-radius: 15px;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+        }
+
+        .node-trons, .node-replicas, .messages-processed {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            padding: 0.3rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+
+        .tron-count, .replica-count, .msg-count {
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+        .protocol-list {
+            margin: 1rem 0;
+        }
+
+        .protocol {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            margin-bottom: 0.3rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            border-left: 3px solid transparent;
+        }
+
+        .protocol.udp { border-left-color: #ff6b6b; }
+        .protocol.websocket { border-left-color: #4ecdc4; }
+        .protocol.ble { border-left-color: #ffd93d; }
+        .protocol.local { border-left-color: #a8e6cf; }
+
+        .protocol .status {
+            font-weight: bold;
+            color: #00ff88;
+        }
+
+        /* TRON Lifecycle Styles */
+        .tron-lifecycle-container {
+            margin: 3rem 0;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(26, 10, 46, 0.3));
+            border-radius: 20px;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .tron-lifecycle-container h3 {
+            text-align: center;
+            color: #00ff88;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+        }
+
+        .lifecycle-stages {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .stage {
+            text-align: center;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 255, 136, 0.05));
+            border-radius: 15px;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            min-width: 140px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .stage:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .stage.active {
+            border-color: #00ff88;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 255, 136, 0.1));
+            animation: stage-pulse 2s infinite;
+        }
+
+        @keyframes stage-pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 136, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(0, 255, 136, 0.8); }
+        }
+
+        .stage-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stage-name {
+            font-weight: bold;
+            color: #00ff88;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .stage-desc {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            line-height: 1.3;
+        }
+
+        .stage-arrow {
+            font-size: 2rem;
+            color: #00ff88;
+            animation: arrow-glow 2s infinite;
+        }
+
+        @keyframes arrow-glow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Live TRONs Display */
+        .live-trons-container {
+            margin: 3rem 0;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(16, 33, 62, 0.5));
+            border-radius: 20px;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .live-trons-container h3 {
+            text-align: center;
+            color: #00ff88;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+        }
+
+        #active-trons-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .live-tron {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(255, 107, 107, 0.1));
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 10px;
+            padding: 1rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .live-tron:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.2);
+        }
+
+        .tron-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .tron-id {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+        .tron-state {
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .tron-state.alive { background: rgba(0, 255, 136, 0.3); color: #00ff88; }
+        .tron-state.dying { background: rgba(255, 107, 107, 0.3); color: #ff6b6b; }
+        .tron-state.dead { background: rgba(128, 128, 128, 0.3); color: #888; }
+
+        .tron-info {
+            font-size: 0.8rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .tron-info span {
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+        .tron-progress {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .tron-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88, #ff6b6b);
+            transition: width 0.3s ease;
+        }
+
+        /* Responsive Design Updates */
+        @media (max-width: 768px) {
+            .lifecycle-stages {
+                flex-direction: column;
+            }
+            
+            .stage-arrow {
+                transform: rotate(90deg);
+            }
+            
+            .real-network-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0a0a, #1a0a2e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fade-out 3s 2s forwards;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .loading-spinner {
+            width: 100px;
+            height: 100px;
+            border: 4px solid rgba(0, 255, 136, 0.1);
+            border-top: 4px solid #00ff88;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 2rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fade-out {
+            0% { opacity: 1; visibility: visible; }
+            99% { opacity: 0; visibility: visible; }
+            100% { opacity: 0; visibility: hidden; }
+        }        /* Welcome Popup */
+        .welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 1;
+            animation: welcome-fade-in 0.5s ease-out;
+        }
+
+        .welcome-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease-out;
+        }
+
+        @keyframes welcome-fade-in {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .welcome-popup {
+            background: linear-gradient(135deg, rgba(10, 10, 10, 0.95), rgba(26, 10, 46, 0.95));
+            border: 2px solid rgba(0, 255, 136, 0.6);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 255, 136, 0.3);
+            animation: welcome-slide-up 0.8s ease-out;
+        }
+
+        @keyframes welcome-slide-up {
+            0% { 
+                transform: translateY(50px) scale(0.9);
+                opacity: 0;
+            }
+            100% { 
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .welcome-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #00ff88, #4ecdc4, #ffd93d);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 2s ease-in-out infinite;
+            margin-bottom: 1.5rem;
+        }
+
+        .welcome-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .welcome-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-feature {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 10px;
+            padding: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .welcome-feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .welcome-button {
+            background: linear-gradient(135deg, #00ff88, #4ecdc4);
+            border: none;
+            border-radius: 50px;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+        }
+
+        .welcome-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 255, 136, 0.6);
+        }
+
+        /* System Description Header */
+        .description-header {
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(78, 205, 196, 0.1));
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.2);
+            animation: description-slide-in 1s ease-out 0.5s both;
+        }
+
+        @keyframes description-slide-in {
+            0% { 
+                opacity: 0; 
+                transform: translateY(30px);
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateY(0);
+            }
+        }
+
+        .description-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #00ff88;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .description-text {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .description-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .description-highlight {
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 4px solid #00ff88;
+            padding: 1rem;
+            border-radius: 5px;
+        }
+
+        .description-highlight-title {
+            font-weight: 700;
+            color: #4ecdc4;
+            margin-bottom: 0.5rem;
+        }        .description-highlight-text {
+            font-size: 0.95rem;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        /* Welcome Popup */
+        .welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 1;
+            animation: welcome-fade-in 0.5s ease-out;
+        }
+
+        .welcome-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease-out;
+        }
+
+        @keyframes welcome-fade-in {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .welcome-popup {
+            background: linear-gradient(135deg, rgba(10, 10, 10, 0.95), rgba(26, 10, 46, 0.95));
+            border: 2px solid rgba(0, 255, 136, 0.6);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 255, 136, 0.3);
+            animation: welcome-slide-up 0.8s ease-out;
+        }
+
+        @keyframes welcome-slide-up {
+            0% { 
+                transform: translateY(50px) scale(0.9);
+                opacity: 0;
+            }
+            100% { 
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .welcome-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #00ff88, #4ecdc4, #ffd93d);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 2s ease-in-out infinite;
+            margin-bottom: 1.5rem;
+        }
+
+        .welcome-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .welcome-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-feature {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 10px;
+            padding: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .welcome-feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .welcome-button {
+            background: linear-gradient(135deg, #00ff88, #4ecdc4);
+            border: none;
+            border-radius: 50px;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+        }
+
+        .welcome-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 255, 136, 0.6);
+        }
+
+        /* System Description Header */
+        .description-header {
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(78, 205, 196, 0.1));
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.2);
+            animation: description-slide-in 1s ease-out 0.5s both;
+        }
+
+        @keyframes description-slide-in {
+            0% { 
+                opacity: 0; 
+                transform: translateY(30px);
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateY(0);
+            }
+        }
+
+        .description-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #00ff88;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .description-text {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .description-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .description-highlight {
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 4px solid #00ff88;
+            padding: 1rem;
+            border-radius: 5px;
+        }
+
+        .description-highlight-title {
+            font-weight: 700;
+            color: #4ecdc4;
+            margin-bottom: 0.5rem;
+        }
+
+        .description-highlight-text {
+            font-size: 0.95rem;
+            opacity: 0.8;
+            line-height: 1.5;
+        }    </style>
+</head>
+<body>
+    <!-- Welcome Popup -->
+    <div class="welcome-overlay" id="welcomeOverlay">
+        <div class="welcome-popup">
+            <div class="welcome-title">🧬 Bem-vindo ao RAIZ Perfect World!</div>
+            <div class="welcome-description">
+                Você está prestes a explorar uma demonstração completa do sistema RAIZ funcionando em seu estado ideal - 100% implementado com todas as funcionalidades ativas.
+            </div>
+            <div class="welcome-features">
+                <div class="welcome-feature">
+                    <span class="welcome-feature-icon">🔥</span>
+                    <strong>TRONs Vivos</strong><br>
+                    Ciclo completo de vida
+                </div>
+                <div class="welcome-feature">
+                    <span class="welcome-feature-icon">🌐</span>
+                    <strong>Memória Distribuída</strong><br>
+                    3 nós ativos
+                </div>
+                <div class="welcome-feature">
+                    <span class="welcome-feature-icon">📡</span>
+                    <strong>Gateway Modular</strong><br>
+                    4 protocolos integrados
+                </div>
+                <div class="welcome-feature">
+                    <span class="welcome-feature-icon">⚡</span>
+                    <strong>Apoptose Digital</strong><br>
+                    Auto-limpeza inteligente
+                </div>
+            </div>
+            <button class="welcome-button" onclick="closeWelcomePopup()">
+                Explorar Sistema RAIZ
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div class="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h2>🧬 Inicializando RAIZ Perfect World...</h2>
+            <p>Carregando sistema perfeito de TRONs vivos</p>
+        </div>
+    </div>
+
+    <!-- Animated Background -->
+    <div class="background-grid"></div>
+
+    <!-- Floating Particles -->
+    <script>
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 8 + 's';
+            particle.style.animationDuration = (8 + Math.random() * 4) + 's';
+            document.body.appendChild(particle);
+        }
+    </script>    <!-- Header -->
+    <header class="header">
+        <h1 class="title">🧬 RAIZ Perfect World</h1>
+        <p class="subtitle">Sistema de TRONs Vivos • 100% Implementation • Perfect Functionality</p>
+        
+        <!-- Interactive Guide -->
+        <div class="interactive-guide">
+            <div class="guide-content">
+                <div class="guide-icon">🎮</div>
+                <div class="guide-text">
+                    <strong>Como usar:</strong> 
+                    1️⃣ Clique em "Iniciar Sistema RAIZ" 
+                    2️⃣ Use "Criar TRON" para ver o ciclo completo 
+                    3️⃣ Observe TRONs nascerem, viverem e morrerem automaticamente
+                </div>
+                <button class="guide-dismiss" onclick="this.parentElement.parentElement.style.display='none'">×</button>
+            </div>
+        </div>    </header>
+
+    <!-- System Description -->
+    <div class="description-header">
+        <div class="description-title">🔬 Sistema RAIZ - Inteligência Artificial Distribuída</div>
+        <div class="description-text">
+            O RAIZ é um sistema revolucionário de inteligência artificial que simula processos biológicos através de <strong>TRONs Vivos</strong> - entidades digitais que nascem, evoluem, se replicam e morrem naturalmente. Esta demonstração mostra o sistema funcionando em seu estado perfeito com 100% das funcionalidades implementadas.
+        </div>
+        <div class="description-highlights">
+            <div class="description-highlight">
+                <div class="description-highlight-title">🧬 TRONs Vivos</div>
+                <div class="description-highlight-text">Entidades digitais conscientes com ciclo de vida completo: nascimento → crescimento → replicação → apoptose</div>
+            </div>
+            <div class="description-highlight">
+                <div class="description-highlight-title">🌐 Memória Distribuída</div>
+                <div class="description-highlight-text">Sistema de 3 nós que compartilham e sincronizam dados automaticamente em tempo real</div>
+            </div>
+            <div class="description-highlight">
+                <div class="description-highlight-title">📡 Gateway Modular</div>
+                <div class="description-highlight-text">4 protocolos de comunicação: UDP, WebSocket, Bluetooth Low Energy e Local</div>
+            </div>
+            <div class="description-highlight">
+                <div class="description-highlight-title">⚡ Apoptose Digital</div>
+                <div class="description-highlight-text">Auto-limpeza inteligente que remove TRONs obsoletos mantendo o sistema otimizado</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container"><!-- Real RAIZ System Visualization -->
+        <section class="network-section">
+            <h2 class="section-title">🧬 Sistema RAIZ Real - Ciclo Completo</h2>
+              <!-- System Control Panel -->
+            <div class="system-controls">
+                <button id="start-system" class="control-btn">🚀 Iniciar Sistema RAIZ</button>
+                <button id="spawn-tron" class="control-btn">🧬 Criar TRON</button>
+                <button id="trigger-apoptosis" class="control-btn">💀 Forçar Apoptose</button>
+                <button id="reset-system" class="control-btn">🔄 Reset Sistema</button>
+            </div>
+            
+            <!-- System Status Indicator -->
+            <div class="system-status" id="system-status">
+                <div class="status-indicator offline">
+                    <div class="status-dot"></div>
+                    <span class="status-text">Sistema Offline - Clique em "Iniciar Sistema RAIZ"</span>
+                </div>
+            </div>
+            
+            <!-- Real Network Container -->
+            <div class="real-network-container">
+                <!-- Memory Nodes - Real Implementation -->
+                <div class="memory-node" id="node-001" data-node-id="node-001">
+                    <div class="node-header">💾 Memória Distribuída</div>
+                    <div class="node-id">node-001</div>
+                    <div class="node-status">ATIVO</div>
+                    <div class="node-trons">TRONs: <span class="tron-count">0</span></div>
+                    <div class="node-replicas">Réplicas: <span class="replica-count">0</span></div>
+                </div>
+                
+                <div class="memory-node" id="node-002" data-node-id="node-002">
+                    <div class="node-header">💾 Memória Distribuída</div>
+                    <div class="node-id">node-002</div>
+                    <div class="node-status">ATIVO</div>
+                    <div class="node-trons">TRONs: <span class="tron-count">0</span></div>
+                    <div class="node-replicas">Réplicas: <span class="replica-count">0</span></div>
+                </div>
+                
+                <div class="memory-node" id="node-003" data-node-id="node-003">
+                    <div class="node-header">💾 Memória Distribuída</div>
+                    <div class="node-id">node-003</div>
+                    <div class="node-status">ATIVO</div>
+                    <div class="node-trons">TRONs: <span class="tron-count">0</span></div>
+                    <div class="node-replicas">Réplicas: <span class="replica-count">0</span></div>
+                </div>
+                
+                <!-- Gateway Modular -->
+                <div class="gateway-node" id="gateway-001">
+                    <div class="node-header">🌐 Gateway Modular</div>
+                    <div class="protocol-list">
+                        <div class="protocol udp">📡 UDP: <span class="status">ATIVO</span></div>
+                        <div class="protocol websocket">🔗 WebSocket: <span class="status">ATIVO</span></div>
+                        <div class="protocol ble">📲 BLE: <span class="status">ATIVO</span></div>
+                        <div class="protocol local">📁 Local: <span class="status">ATIVO</span></div>
+                    </div>
+                    <div class="messages-processed">Mensagens: <span class="msg-count">0</span></div>
+                </div>
+            </div>
+            
+            <!-- TRON Lifecycle Visualization -->
+            <div class="tron-lifecycle-container">
+                <h3>🧬 Ciclo de Vida dos TRONs</h3>
+                <div class="lifecycle-stages">
+                    <div class="stage birth">
+                        <div class="stage-icon">🌱</div>
+                        <div class="stage-name">NASCIMENTO</div>
+                        <div class="stage-desc">TRON criado com DNA único</div>
+                    </div>
+                    <div class="stage-arrow">→</div>
+                    <div class="stage replication">
+                        <div class="stage-icon">🔄</div>
+                        <div class="stage-name">REPLICAÇÃO</div>
+                        <div class="stage-desc">Cópias distribuídas na rede</div>
+                    </div>
+                    <div class="stage-arrow">→</div>
+                    <div class="stage propagation">
+                        <div class="stage-icon">📡</div>
+                        <div class="stage-name">PROPAGAÇÃO</div>
+                        <div class="stage-desc">Enviado via gateway multi-protocolo</div>
+                    </div>
+                    <div class="stage-arrow">→</div>
+                    <div class="stage delivery">
+                        <div class="stage-icon">🎯</div>
+                        <div class="stage-name">ENTREGA</div>
+                        <div class="stage-desc">Processado no nó destino</div>
+                    </div>
+                    <div class="stage-arrow">→</div>
+                    <div class="stage apoptosis">
+                        <div class="stage-icon">💀</div>
+                        <div class="stage-name">APOPTOSE</div>
+                        <div class="stage-desc">Auto-destruição e limpeza</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Live TRON Display -->
+            <div class="live-trons-container">
+                <h3>🧬 TRONs Ativos no Sistema</h3>
+                <div id="active-trons-list"></div>
+            </div>
+        </section>
+
+        <!-- Features Grid -->
+        <section class="features-grid">
+            <div class="feature-card">
+                <span class="feature-icon">🧬</span>
+                <h3 class="feature-title">TRONs Vivos</h3>
+                <p class="feature-description">Entidades digitais que nascem, vivem, se replicam e morrem automaticamente. Cada TRON tem seu próprio ciclo de vida biológico com apoptose digital.</p>
+            </div>
+            
+            <div class="feature-card">
+                <span class="feature-icon">💾</span>
+                <h3 class="feature-title">Memória Distribuída</h3>
+                <p class="feature-description">Sistema planetário de memória sem servidor central. Dados replicados automaticamente entre nós com sincronização inteligente.</p>
+            </div>
+            
+            <div class="feature-card">
+                <span class="feature-icon">🌐</span>
+                <h3 class="feature-title">Gateway Modular</h3>
+                <p class="feature-description">Comunicação multi-protocolo automática: UDP, WebSocket, BLE, Mesh, Satélite. Propagação global instantânea.</p>
+            </div>
+            
+            <div class="feature-card">
+                <span class="feature-icon">🔒</span>
+                <h3 class="feature-title">Segurança Militar</h3>
+                <p class="feature-description">Ed25519 + AES-256 + HMAC. Criptografia de nível militar com autenticação distribuída e proteção anti-bruteforce.</p>
+            </div>
+            
+            <div class="feature-card">
+                <span class="feature-icon">⚡</span>
+                <h3 class="feature-title">Performance Extrema</h3>
+                <p class="feature-description">81% redução de dependências, 44% melhoria de memória, 65% startup mais rápido. Arquitetura Rust + Python híbrida.</p>
+            </div>
+            
+            <div class="feature-card">
+                <span class="feature-icon">🌍</span>
+                <h3 class="feature-title">Rede Global</h3>
+                <p class="feature-description">Conectividade mundial sem internet: mesh física, BLE, rádio, satélite. Verdadeiramente descentralizado e resistente.</p>
+            </div>
+        </section>
+
+        <!-- Protocol Flow -->
+        <section class="protocol-flow">
+            <div class="protocol-step">
+                <span class="step-icon">🧬</span>
+                <div class="step-title">TRON Nascimento</div>
+                <div class="step-description">Entidade digital nasce com DNA único</div>
+            </div>
+            <div class="protocol-step">
+                <span class="step-icon">📡</span>
+                <div class="step-title">Propagação</div>
+                <div class="step-description">Multi-protocolo automático global</div>
+            </div>
+            <div class="protocol-step">
+                <span class="step-icon">💾</span>
+                <div class="step-title">Replicação</div>
+                <div class="step-description">Cópias distribuídas em rede planetária</div>
+            </div>
+            <div class="protocol-step">
+                <span class="step-icon">🎯</span>
+                <div class="step-title">Entrega</div>
+                <div class="step-description">Processamento nos nós de destino</div>
+            </div>
+            <div class="protocol-step">
+                <span class="step-icon">💀</span>
+                <div class="step-title">Apoptose</div>
+                <div class="step-description">Auto-destruição limpa a rede</div>
+            </div>
+        </section>
+
+        <!-- Status Dashboard -->
+        <section class="status-dashboard">
+            <h2 class="section-title">📊 Status Tempo Real - Perfect World</h2>
+            <div class="dashboard-grid">
+                <div class="metric">
+                    <span class="metric-value" data-target="100">0</span>%
+                    <div class="metric-label">Taxa de Sucesso</div>
+                </div>
+                <div class="metric">
+                    <span class="metric-value" data-target="1247">0</span>
+                    <div class="metric-label">TRONs Ativos</div>
+                </div>
+                <div class="metric">
+                    <span class="metric-value" data-target="47">0</span>
+                    <div class="metric-label">Nós Conectados</div>
+                </div>
+                <div class="metric">
+                    <span class="metric-value" data-target="8">0</span>ms
+                    <div class="metric-label">Latência Média</div>
+                </div>
+                <div class="metric">
+                    <span class="metric-value" data-target="99">0</span>.9%
+                    <div class="metric-label">Disponibilidade</div>
+                </div>
+                <div class="metric">
+                    <span class="metric-value" data-target="312">0</span>TB
+                    <div class="metric-label">Dados Distribuídos</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Performance Metrics -->
+        <section class="performance-bars">
+            <h2 class="section-title">⚡ Métricas de Performance Perfect World</h2>
+            
+            <div class="performance-item">
+                <div class="performance-label">
+                    <span>Redução de Dependências</span>
+                    <span>81.2%</span>
+                </div>
+                <div class="performance-bar">
+                    <div class="performance-fill" style="width: 81.2%;"></div>
+                </div>
+            </div>
+            
+            <div class="performance-item">
+                <div class="performance-label">
+                    <span>Melhoria de Memória</span>
+                    <span>44.4%</span>
+                </div>
+                <div class="performance-bar">
+                    <div class="performance-fill" style="width: 44.4%;"></div>
+                </div>
+            </div>
+            
+            <div class="performance-item">
+                <div class="performance-label">
+                    <span>Velocidade de Startup</span>
+                    <span>65.7%</span>
+                </div>
+                <div class="performance-bar">
+                    <div class="performance-fill" style="width: 65.7%;"></div>
+                </div>
+            </div>
+            
+            <div class="performance-item">
+                <div class="performance-label">
+                    <span>Redução de Latência WebSocket</span>
+                    <span>46.7%</span>
+                </div>
+                <div class="performance-bar">
+                    <div class="performance-fill" style="width: 46.7%;"></div>
+                </div>
+            </div>
+            
+            <div class="performance-item">
+                <div class="performance-label">
+                    <span>Coverage de Testes</span>
+                    <span>100%</span>
+                </div>
+                <div class="performance-bar">
+                    <div class="performance-fill" style="width: 100%;"></div>
+                </div>
+            </div>
+        </section>
+    </div>    <!-- Advanced Interactive Demo Script -->
+    <script src="raiz_perfect_world.js"></script>
+    
+    <script>
+        // Counter animation for metrics (mantido do original)
+        function animateCounter(element) {
+            const target = parseInt(element.getAttribute('data-target'));
+            let current = 0;
+            const increment = target / 100;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(current);
+            }, 20);
+        }
+
+        // Animate all counters when page loads
+        window.addEventListener('load', () => {
+            const counters = document.querySelectorAll('.metric-value');
+            setTimeout(() => {
+                counters.forEach(animateCounter);
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
